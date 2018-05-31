@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">RedTooth</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="received">...</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_receiver">Transmitter</string>
+    <string name="image">Image</string>
+    <string name="audio">Audio</string>
+    <string name="video">Video</string>
+</resources>
