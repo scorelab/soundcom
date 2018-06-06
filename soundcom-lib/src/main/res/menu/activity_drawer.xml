@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:id="@+id/menuGroup_1"
+        android:checkableBehavior="single">
+            <item
+                android:id="@+id/transmit"
+                android:icon="@drawable/ic_settings_input_antenna_black_36dp"
+                android:title="Transmit" />
+            <item
+                android:id="@+id/receive"
+                android:icon="@drawable/ic_hearing_black_36dp"
+                android:title="Receive" />
+
+    </group>
+
+    <!--<item android:title="Modulation Schemes">-->
+        <!--<menu>-->
+            <!--<item-->
+                <!--android:id="@+id/bpsk"-->
+                <!--android:icon="@drawable/bpsk"-->
+                <!--android:title="BPSK" />-->
+            <!--<item-->
+                <!--android:id="@+id/qpsk"-->
+                <!--android:icon="@drawable/qpsk"-->
+                <!--android:title="QPSK" />-->
+            <!--<item-->
+                <!--android:id="@+id/ofdm_bpsk"-->
+                <!--android:icon="@drawable/ofdm_bpsk"-->
+                <!--android:title="OFDM using BPSK" />-->
+            <!--<item-->
+                <!--android:id="@+id/ofdm_qpsk"-->
+                <!--android:icon="@drawable/ofdm_qpsk"-->
+                <!--android:title="OFDM using QPSK" />-->
+            <!--<item-->
+                <!--android:id="@+id/fsk"-->
+                <!--android:icon="@drawable/fsk"-->
+                <!--android:title="FSK" />-->
+
+        <!--</menu>-->
+    <!--</item>-->
+
+</menu>

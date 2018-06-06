@@ -1,0 +1,311 @@
+//////////////////////////////////////////////////////////////     CONVOLUTION BASED SIGNAL RECOVERY      //////////////////////////////////////////////////////////////////////////////////////////////
+filter_output.addAll(conv(modulated));
+            start_index = 0;
+            boolean detected = false;
+
+            for (int i = 0; i < filter_output.size(); i++) {
+                if (filter_output.get(i) > matched_noise) {
+                    System.out.println("--------------------------- S  T  A  R  T     D  E   T   E   C   T   E   C   T   E  D ---------------------------");
+                    start_index = start_index + i;
+                    detected = true;
+                    while ((start_index % sample_rate * symbol_size) != 0) {
+                        start_index += 1;
+                    }
+                    break;
+                }
+            }
+            if (detected) {
+
+
+                start_index = start_index + (int) sample_rate - (int) (symbol_size * sample_rate);
+
+                for (int n = start_index; n < start_index + 388080; n++) {
+                    recovered_signal.add(filter_output.get(n));
+
+                }
+            } else {
+                System.out.println("---------------------------  N   O    T       D  E   T   E   C   T   E   C   T   E  D ---------------------------");
+            }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////NON FERQUENCY DOMAIN BASED IMPLEMENTATION///////////////////////////////////////
+package com.wix.mimesarcik.redtooth.Infrastructure;
+
+
+import android.util.Log;
+
+import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
+import org.jtransforms.fft.DoubleFFT_1D;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+/**
+ * Created by misha on 2016/09/23.
+ */
+public class MatchedFilter {
+
+    private static double duration;
+    private static double symbol_size;
+    private static double sample_rate;
+    private static double sample_period;
+    private static double matched_noise;
+    private static double threshold;
+
+    private static int max_index;
+    private static int start_index;
+
+    private static ArrayList<Double> modulated;
+    private static ArrayList<Double> noise;
+    private static ArrayList<Double> chirp_signal;
+
+    private static ArrayList<Double> filter_output;
+    private static ArrayList<Double> recovered_signal;
+
+    private static SignalGenerator signal_generator;
+
+    public MatchedFilter() {
+    }
+
+    public MatchedFilter(double duration, double symbol_size, double sample_rate, ArrayList<Double> modulated) {
+        this.duration = duration;
+        this.symbol_size = symbol_size;
+        this.sample_rate = sample_rate;
+        this.sample_period = 1.0 / sample_rate;
+        this.modulated = modulated;
+        this.matched_noise = -1.0;
+
+        this.chirp_signal = new ArrayList<Double>();
+        this.noise = new ArrayList<Double>();
+        this.filter_output = new ArrayList<Double>();
+        this.recovered_signal = new ArrayList<Double>();
+
+
+        getSync();
+        getNoise();
+        matchNoise();
+        matchSignal();
+
+
+    }
+
+    public void getSync() {
+        System.out.println("Generating Sync Signal");
+
+        signal_generator = new SignalGenerator(symbol_size, 16000, sample_period);
+        signal_generator.generate_sync();
+        chirp_signal = signal_generator.getSync();
+
+
+    }
+
+    public void getNoise() {
+        System.out.println("Getting noise.");
+
+        // Noise is assumed to be the first 1 seconds of the modulated signal.
+
+        for (int i = 0; i < sample_rate * 1; i++) {
+            noise.add(modulated.get(i));
+//            modulated.remove(0);//Remove the 'noise' from the modulated array
+//            System.out.println("iteration: " + i);
+        }
+
+
+    }
+
+    public void matchNoise() {
+        try {
+
+            DoubleFFT_1D fftDo = new DoubleFFT_1D(noise.size());
+            double[] fft_noise = new double[noise.size()* 2];
+            System.arraycopy(toArray(noise), 0, fft_noise, 0, noise.size());
+            fftDo.realForward(fft_noise);
+
+
+            System.out.println("This is the FFT of the noise's size:  " + fft_noise.length );
+
+            fftDo = new DoubleFFT_1D(noise.size());
+            double[] fft_chirp = new double[noise.size()* 2];
+            System.arraycopy(toArray(chirp_signal), 0, fft_chirp, 0, chirp_signal.size());
+            fftDo.realForward(fft_chirp);
+            System.out.println("This is the FFT of the chirp's size:  " + fft_chirp.length);
+
+            double [] matched_noise_a_fft = new double[fft_chirp.length];
+
+            for (int i = 0; i < fft_chirp.length; i++) {
+                matched_noise_a_fft[i] = fft_chirp[i]*fft_noise[i];
+            }
+            fftDo = new DoubleFFT_1D(matched_noise_a_fft.length);
+            double[] matched_noise_a = new double[matched_noise_a_fft.length* 2];
+            System.arraycopy(matched_noise_a_fft, 0, matched_noise_a, 0, matched_noise_a_fft.length);
+
+            fftDo.realInverse(matched_noise_a, true);
+            StandardDeviation std = new StandardDeviation();
+
+            threshold = 20 * std.evaluate((matched_noise_a));
+
+            System.out.println("This is threshold: " + threshold);
+
+//            ArrayList<Double> matched_noise = correlate(noise, -1);
+//            threshold = 20 * std.evaluate(toArray(matched_noise));
+//            System.out.println("This is threshold: " + threshold);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    public void matchSignal() {
+        try {
+            for (int j = 0; j < sample_rate; j++) {
+                modulated.remove(0);
+            }
+
+            System.out.println("Starting to find a syncrhonization match");
+
+
+
+            DoubleFFT_1D fftDo = new DoubleFFT_1D(modulated.size());
+            double[] fft_mod = new double[modulated.size()* 2];
+            System.arraycopy(toArray(modulated), 0, fft_mod, 0, modulated.size());
+            fftDo.realForward(fft_mod);
+
+            fftDo = new DoubleFFT_1D(noise.size());
+            double[] fft_chirp = new double[noise.size()* 2];
+            System.arraycopy(toArray(chirp_signal), 0, fft_chirp, 0, chirp_signal.size());
+            fftDo.realForward(fft_chirp);
+            System.out.println("This is the FFT of the chirp's size:  " + fft_chirp.length);
+
+            double [] matched_noise_a_fft = new double[fft_chirp.length];
+
+            for (int i = 0; i < fft_chirp.length; i++) {
+                matched_noise_a_fft[i] = fft_chirp[i]*fft_mod[i];
+            }
+            fftDo = new DoubleFFT_1D(matched_noise_a_fft.length);
+            double[] filter_out = new double[matched_noise_a_fft.length* 2];
+            System.arraycopy(matched_noise_a_fft, 0, filter_out, 0, matched_noise_a_fft.length);
+
+            fftDo.realInverse(filter_out, true);
+
+//            filter_output = correlate(modulated,threshold);
+
+            double max_value = Collections.max(filter_out);
+
+            for (int i = 0; i < filter_output.size(); i++) {
+                if(filter_output.get(i) == max_value){
+                    max_index = i;
+                }
+            }
+            start_index = max_index + (int)(symbol_size * sample_rate);
+            for (int n = start_index; n < start_index + 388080; n++) {
+                recovered_signal.add(modulated.get(n));
+
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public ArrayList<Double> correlate (ArrayList<Double> input,double threshold){
+        System.out.println("Starting Correlation");
+        int n = chirp_signal.size();
+        System.out.println("Size of the synchronization signal: " + n);
+        int m = input.size();
+        System.out.print("This is the size of m: "  + m);
+
+
+        ArrayList<Double> ar = new ArrayList<Double>(m-n+1);
+
+        boolean detected = false;
+        int count  = 0;
+
+        double temp = 0;
+        for (int i = 0; i < n; i++) {
+            temp = temp + input.get(i)*chirp_signal.get(i);
+        }
+        ar.add(temp);
+        System.out.println("Correlated the first symbol");
+        for (int i = 0; i < m-n; i++) {
+//          Log.d("Correlation", "Iteration: " + i);
+            if (detected) {count++;}
+
+            if(count < sample_rate*symbol_size){
+                temp = 0;
+                for (int j = 0; j <n ; j++) {
+                    temp = temp + input.get(j+i)*chirp_signal.get(j);
+                }
+                ar.add(temp);
+                if((threshold != -1) &&(ar.get(i) > threshold)){
+                    detected =true;
+                    System.out.println("Correlated Signal exceded threshold.");
+
+                }
+
+            }if(count > sample_rate*symbol_size){
+                System.out.println("--------------------------- S  Y   N   C     D  E   T   E   C   T   E   C   T   E  D ---------------------------");
+                break;
+            }
+
+        }
+
+
+
+        return ar;
+
+    }
+
+//    public ArrayList<Double> conv(ArrayList<Double> input) {
+//        System.out.println("Starting Convolution");
+//        int m = chirp_signal.size();
+//        System.out.println("Size of the synchronization signal: " + m);
+//        int n = input.size();
+//        System.out.println("Size of the inputted signal: " + n);
+//        ArrayList<Double> ar = new ArrayList<Double>();
+//        for (int i = 0; i < n + m - 1; i++) {
+//            double temp = 0;
+//            for (int j = 0; j < m; j++) {
+//                if ((i - j >= 0) && (i - j < n)) {
+//                    temp = temp + chirp_signal.get(j) * input.get(i - j);
+//                }
+//            }
+//            ar.add(temp);
+//
+//        }
+//        System.out.println("Convolution Ended");
+//
+//        return ar;
+//    }
+
+    public ArrayList<Double> getRecovered_signal() {
+        return recovered_signal;
+    }
+
+    public double [] toArray(ArrayList<Double> in){
+        double [] ret = new double [in.size()*2];
+        for (int i = 0; i <in.size() ; i++) {
+            ret[i] = in.get(i);
+        }
+
+        return ret;
+    }
+
+    public ArrayList<Double> toArrayList(double [] in){
+        ArrayList <Double>  ret = new ArrayList<Double>();
+        for (int i = 0; i < in.length; i++) {
+            ret.add(in[i]);
+        }
+
+
+        return ret;
+    }
+
+
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

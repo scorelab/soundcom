@@ -1,0 +1,1 @@
+include ':soundcom-app', ':soundcom-lib'
