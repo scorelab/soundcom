@@ -5,6 +5,10 @@
         android:id="@+id/menuGroup_1"
         android:checkableBehavior="single">
             <item
+                android:id="@+id/history"
+                android:icon="@drawable/history"
+                android:title="History" />
+            <item
                 android:id="@+id/transmit"
                 android:icon="@drawable/ic_settings_input_antenna_black_36dp"
                 android:title="Transmit" />
@@ -12,6 +16,7 @@
                 android:id="@+id/receive"
                 android:icon="@drawable/ic_hearing_black_36dp"
                 android:title="Receive" />
+
 
     </group>
 

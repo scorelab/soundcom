@@ -7,9 +7,7 @@ import java.util.Collections;
 import java.lang.Math;
 
 
-/**
- * Created by misha on 2016/09/12.
- */
+
 public class FSK_Demodulator {
 
 

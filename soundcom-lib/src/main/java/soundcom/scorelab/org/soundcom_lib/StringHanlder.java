@@ -3,9 +3,6 @@ package soundcom.scorelab.org.soundcom_lib;
 
 import java.util.ArrayList;
 
-/**
- * Created by misha on 2016/09/15.
- */
 public class StringHanlder {
     private String src;
     private int[] b;

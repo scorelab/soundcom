@@ -69,7 +69,7 @@ public class Permission extends AppCompatActivity
     private static final int REQUEST_WRITE_STORAGE = 112;
 
 
-    @Override
+   @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -86,9 +86,9 @@ public class Permission extends AppCompatActivity
 
         modulation = "FSK";
         sample_rate = 44100.0;
-        symbol_size = 0.5;
+        symbol_size = 0.25;
         sample_period = 1.0 / sample_rate;
-        duration = 12;//duration = src.length * 16 * symbol_size /7
+        duration = 36;//duration = src.length * 16 * symbol_size /7
         number_of_carriers = 16;
 
 
@@ -106,13 +106,43 @@ public class Permission extends AppCompatActivity
 
 
     }
+        public void test(){
+        setContentView(R.layout.activity_start);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        image = new ImageView(this);
+        image.setImageResource(R.drawable.transmit);
 
+
+        modulation = "FSK";
+        sample_rate = 44100.0;
+        symbol_size = 0.25;
+        sample_period = 1.0 / sample_rate;
+        duration = 36;//duration = src.length * 16 * symbol_size /7
+        number_of_carriers = 16;
+
+
+        requestWritePermissions();
+        requestRecordPermissions();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+    }
+
+    //public void test(){System.out.println("Working");}
     public void onClick(View v) {
         if(v.getId()==R.id.generate) {
 
                 final Context context = getApplicationContext();
                 src = mEdit.getText().toString();
-                while (src.length() != 5) {
+                while (src.length() != 30) {
                     src += " ";
                 }
                 generate(context);

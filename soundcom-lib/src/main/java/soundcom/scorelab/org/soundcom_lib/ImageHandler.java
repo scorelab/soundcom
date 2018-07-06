@@ -7,9 +7,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.widget.ImageView;
 
-/**
- * Created by misha on 2016/09/13.
- */
+
 public class ImageHandler {
 
     private static  ImageView imagePath;

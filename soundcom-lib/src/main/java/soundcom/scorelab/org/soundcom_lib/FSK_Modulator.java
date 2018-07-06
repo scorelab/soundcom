@@ -3,9 +3,7 @@ package soundcom.scorelab.org.soundcom_lib;
 import java.lang.*;
 import java.util.*;
 
-/**
- * Created by misha on 2016/09/12.
- */
+
 public class FSK_Modulator {
 
     private static int[] data;
