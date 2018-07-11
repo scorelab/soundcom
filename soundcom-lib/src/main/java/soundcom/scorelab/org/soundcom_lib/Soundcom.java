@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-/**
- * Created by misha on 2016/09/15.
- */
 public class Soundcom extends Activity {
 
     /** Duration of wait **/

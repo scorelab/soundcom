@@ -17,9 +17,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 
-/**
- * NOOOOOOOOOOOT!!!! Created by misha on 2016/09/17.
- */
+
 public class Recorder {
 
     //Begin private fields for this class

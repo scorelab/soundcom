@@ -12,9 +12,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-/**
- * Created by misha on 2016/09/23.
- */
+
 public class MatchedFilter {
 
     private double duration;

@@ -3,9 +3,7 @@ package soundcom.scorelab.org.soundcom_lib;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-/**
- * Created by misha on 2016/09/13.
- */
+
 public class SignalGenerator {
     private double symbol_size;
     private double f;

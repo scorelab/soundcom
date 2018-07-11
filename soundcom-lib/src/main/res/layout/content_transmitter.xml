@@ -9,8 +9,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".RedTooth"
-    tools:showIn="@layout/app_bar_transmitter">
+    tools:context=".Soundcom"
+    tools:showIn="@layout/app_bar_transmitter"
+    android:background="#e5e8e8">
 
 
     <LinearLayout
@@ -34,19 +35,25 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine"
             android:ems="10"
+            android:padding="10dip"
             android:id="@+id/transmitString"
             android:layout_marginTop="40dp"
             android:layout_alignTop="@+id/tv"
             android:layout_centerHorizontal="true"
             android:maxLength="30"
-            android:text="Test!" />
+            android:text="Test!"
+            android:background="@drawable/rounded_edittext"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Generate"
             android:id="@+id/generate"
-            android:layout_gravity="right" />
+            android:layout_gravity="center"
+            android:background="@color/blue"
+            android:textColor="@color/white"
+            android:layout_marginTop="40dp"
+            />
 
     </LinearLayout>
 </RelativeLayout>

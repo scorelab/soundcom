@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "723919374703",
+    "firebase_url": "https://soundcom-fdc55.firebaseio.com",
+    "project_id": "soundcom-fdc55",
+    "storage_bucket": "soundcom-fdc55.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723919374703:android:c6d33e3706c3b6ee",
+        "android_client_info": {
+          "package_name": "soundcom.scorelab.org.soundcom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "723919374703-b9084oiftfmrdd0ifheehjsn2q49a8el.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "soundcom.scorelab.org.soundcom",
+            "certificate_hash": "26f68b01addbd4b3fff63a9f746eccec8336a632"
+          }
+        },
+        {
+          "client_id": "723919374703-tlnv7mndo9lhjvc2586evl9n0ads1jhf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIK2VugzPVekN9ejowRGsLSVxNEjzQ66A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "723919374703-tlnv7mndo9lhjvc2586evl9n0ads1jhf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

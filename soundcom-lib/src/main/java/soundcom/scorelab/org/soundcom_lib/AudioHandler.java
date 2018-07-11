@@ -13,11 +13,7 @@ import soundcom.scorelab.org.soundcom_lib.Soundcom;
 import java.io.*;
 import java.util.ArrayList;
 
-/**
- * File sdcard = Environment.getExternalStorageDirectory();
- * <p/>
- * Created by misha on 2016/09/13.
- */
+
 public class AudioHandler {
 
     private double sample_rate;
@@ -43,7 +39,7 @@ public class AudioHandler {
         try {
 
             String root = Environment.getExternalStorageDirectory().toString();
-            this.wavfile = WavFile.openWavFile(new File(root, "RedTooth/" + filename));
+            this.wavfile = WavFile.openWavFile(new File(root, "Soundcom/" + filename));
             wavfile.display();
 
 
@@ -167,7 +163,7 @@ public class AudioHandler {
             wavfile.close();
 
         } catch (Exception e) {
-            Log.d("RedTooth", e.toString());
+            Log.d("Soundcom", e.toString());
         }
     }
 
@@ -176,7 +172,7 @@ public class AudioHandler {
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             // if storage is mounted return true
-            Log.d("RedTooth", "Yes, can write to external storage.");
+            Log.d("Soundcom", "Yes, can write to external storage.");
             return true;
         }
         return false;

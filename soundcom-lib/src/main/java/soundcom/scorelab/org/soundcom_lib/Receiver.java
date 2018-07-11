@@ -13,9 +13,7 @@ import soundcom.scorelab.org.soundcom_lib.Recorder;
 
 import java.util.ArrayList;
 
-/**
- * Created by misha on 2016/09/12.
- */
+
 public class Receiver {
 
     private String file_name;
@@ -143,7 +141,7 @@ public class Receiver {
     public void concatinateRecording() {
         System.out.println("Concateting recoded waveform.");
 
-        while (modulated.size() != 524288) {
+        while (modulated.size() != 1590232) {
             modulated.remove(modulated.size() - 1);
         }
         System.out.println("This is the size of concatinated waveform: " + modulated.size());

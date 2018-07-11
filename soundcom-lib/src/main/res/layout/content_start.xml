@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".RedTooth"
+    tools:context=".Soundcom"
     tools:showIn="@layout/app_bar_start">
 
 
@@ -18,13 +18,13 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:text="Welcome to RedTooth"
+        android:text="Welcome to Soundcom"
         android:textSize="30dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="RedTooth is a communications standard developed for acoustic data transmission. \n\nIn order to use this app, please open the menu bar on the left and select either transmission mode or reception mode."
+        android:text="Soundcom is a communications standard developed for acoustic data transmission. \n\nIn order to use this app, please open the menu bar on the left and select either transmission mode or reception mode."
         android:id="@+id/textView3"
         android:layout_alignTop="@+id/tv"
         android:layout_centerHorizontal="true"
