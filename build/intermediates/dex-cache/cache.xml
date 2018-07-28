@@ -21,48 +21,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="E:\Soundcom\soundcom-app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.1"
-        sha1="4961be1437163ab598620a3c907c0f3432936f51">
-        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.4.0_0dc8d43709183a3474aebcba96096de665f783b3\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\user\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-math3\3.4.1\3ac44a8664228384bc68437264cf7c4cf112f579\commons-math3-3.4.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.1"
-        sha1="3ac44a8664228384bc68437264cf7c4cf112f579">
-        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\commons-math3-3.4.1_aab7b3a4d7cc98c8b8e884c5a7e931838fc8abd5\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\Soundcom\soundcom-app\build\intermediates\exploded-aar\com.android.support\transition\25.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.1"
-        sha1="40a6b8f05124eb9e6012e18b80a6dbd13440e283">
-        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-transition-25.4.0_c498028b101b1a5b4cdcb3776e83b364d8b6622e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="E:\Soundcom\soundcom-app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.4.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.1"
         sha1="c2deeac83ffa1304264bc755c2ddb84e7a7fa239">
         <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-25.4.0_1e40e7a01103d5abb947495ba1b70ade30c21c3e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\Soundcom\soundcom-app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.1"
-        sha1="bd9a2fda78d19d8b447f5f1a515f31b49fc7db43">
-        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_800ce6eb916064527eb14d3451f37aa2b0257885\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -90,6 +54,51 @@
         revision="25.0.1"
         sha1="b77e50b3c31d0fc64148530f7077f79ec114b5b9">
         <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-25.4.0_20daac6983e29271b392ca4ffefa12cc76367b88\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\Soundcom\soundcom-app\build\intermediates\exploded-aar\com.android.support\support-compat\25.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.1"
+        sha1="a64026daf4819a589aea776f5deb19b257a104d1">
+        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-25.4.0_932a6692c822dbc026e20da461d558f145e3d97c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\Soundcom\soundcom-app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.1"
+        sha1="4961be1437163ab598620a3c907c0f3432936f51">
+        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-25.4.0_0dc8d43709183a3474aebcba96096de665f783b3\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\user\.gradle\caches\modules-2\files-2.1\org.apache.commons\commons-math3\3.4.1\3ac44a8664228384bc68437264cf7c4cf112f579\commons-math3-3.4.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.1"
+        sha1="3ac44a8664228384bc68437264cf7c4cf112f579">
+        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\commons-math3-3.4.1_aab7b3a4d7cc98c8b8e884c5a7e931838fc8abd5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\Soundcom\soundcom-app\build\intermediates\exploded-aar\com.android.support\transition\25.4.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.1"
+        sha1="40a6b8f05124eb9e6012e18b80a6dbd13440e283">
+        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-transition-25.4.0_c498028b101b1a5b4cdcb3776e83b364d8b6622e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="E:\Soundcom\soundcom-app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.1"
+        sha1="7db664255f585ed9db0428de5a6c67c22c91ae36">
+        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_800ce6eb916064527eb14d3451f37aa2b0257885\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -142,7 +151,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.1"
-        sha1="a14729e9bd29ac4b0a018d44f743671d560db4e4">
+        sha1="4bf74ce8037921ae7c4f9699a5a9bad18004f88a">
         <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_c2b936c9bf92efeb14eea56281ef90fc71158d1d\classes.dex" />
     </item>
     <item
@@ -171,15 +180,6 @@
         revision="25.0.1"
         sha1="a7a0aa678c3bbadb67fb41df9e107f7ee9087902">
         <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-25.4.0_8f3689bcbaa0f8edef57125c544c877e0cf80593\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="E:\Soundcom\soundcom-app\build\intermediates\exploded-aar\com.android.support\support-compat\25.4.0\jars\classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.1"
-        sha1="a64026daf4819a589aea776f5deb19b257a104d1">
-        <dex dex="E:\Soundcom\soundcom-app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-25.4.0_932a6692c822dbc026e20da461d558f145e3d97c\classes.dex" />
     </item>
 
 </items>

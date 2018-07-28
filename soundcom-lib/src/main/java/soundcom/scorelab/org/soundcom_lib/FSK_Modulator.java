@@ -88,8 +88,6 @@ public class FSK_Modulator {
             temp[2] = data[i + 2];
             temp[3] = data[i + 3];
 
-//            Log.d("RedTooth", "Running number: " + i );
-
             map(temp);
 
         }

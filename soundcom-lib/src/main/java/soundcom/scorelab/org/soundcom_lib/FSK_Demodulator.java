@@ -75,22 +75,15 @@ public class FSK_Demodulator {
                     holder.add(Math.abs(trapz(carriers.get(j).getData(), Symbol)));
                 }
 
-
                 double max = Collections.max(holder);
-
-//                if (same(holder) == false) {
 
                 for (int n = 0; n < holder.size(); n++) {
                     if (max == holder.get(n)) {
                         demodulated.addAll(getBits(n));
                     }
                 }
-//                }
-
                 holder.clear();
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -189,7 +182,6 @@ public class FSK_Demodulator {
             }
         }
         return bits;
-
     }
 
 
@@ -211,7 +203,6 @@ public class FSK_Demodulator {
             }
             r = sum * 0.5;
 
-
         } catch (Exception e) {
 //            e.printStackTrace();
         }
@@ -231,16 +222,4 @@ public class FSK_Demodulator {
         return demodulated;
     }
 
-//    public boolean same(ArrayList<Double> data) {
-//        boolean s = true;
-//        double check = data.get(0);
-//        for (int i = 1; i < data.size(); i++) {
-//            if (check != data.get(i)) {
-//                return false;
-//            }
-//
-//        }
-//
-//        return s;
-//    }
 }

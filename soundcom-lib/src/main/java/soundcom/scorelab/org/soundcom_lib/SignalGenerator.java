@@ -67,7 +67,6 @@ public class SignalGenerator {
             e.printStackTrace();
         }
         return data;
-
     }
 
 

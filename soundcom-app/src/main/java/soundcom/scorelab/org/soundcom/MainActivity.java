@@ -3,35 +3,21 @@
  */
 package soundcom.scorelab.org.soundcom;
 import android.content.ContextWrapper;
-import android.content.Intent;
 import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
-import android.media.AudioFormat;
-import android.media.AudioRecord;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -55,29 +41,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Writer;
-import java.lang.reflect.Member;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import soundcom.scorelab.org.soundcom_lib.Receiver;
 import soundcom.scorelab.org.soundcom_lib.Transmitter;
-
-import static android.R.id.message;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -96,20 +72,20 @@ public class MainActivity extends AppCompatActivity
 
     private static String recovered_string;
     private static String a;
-    private static TextView name;
-    private static TextView mail;
+    private static TextView name;                             //username
+    private static TextView mail;                             //user-email
     private static EditText mEdit;
     private static Button gen;
     private static FloatingActionButton fab_trans;
     private static TextView recovered_textView;
-    private static String user;
     private MessageAdapter messageAdapter;
     private ListView messagesView;
     private static String TAG = "PermissionDemo";           // Permissions to write to files
     private static final int REQUEST_WRITE_STORAGE = 112;
-    private String filename = "storage.json";
-    private String filepath = "MyFileStorage";
+    private String filename = "storage.json";               //Chat storage
+    private String filepath = "MyFileStorage";              //Path to file
     private File myInternalFile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -117,8 +93,16 @@ public class MainActivity extends AppCompatActivity
         messageAdapter = new MessageAdapter(this);
 
         setContentView(R.layout.home);
+        name = (TextView) findViewById(R.id.username);
+        a = name.getText().toString();
+        mail = (TextView) findViewById(R.id.mailid);
+
+        requestNamePermissions();          //username and email extraction permission
+
+        setContentView(R.layout.home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         View send = findViewById(R.id.send);
         send.setOnClickListener(new View.OnClickListener() {
 
@@ -138,6 +122,10 @@ public class MainActivity extends AppCompatActivity
 
         });
 
+
+        requestWritePermissions();       //wav file & storage file write permission;
+        requestRecordPermissions();      //mic record permission
+
         image = new ImageView(this);
         image.setImageResource(R.drawable.transmit);
 
@@ -146,18 +134,14 @@ public class MainActivity extends AppCompatActivity
         sample_rate = 44100.0;
         symbol_size = 0.25;
         sample_period = 1.0 / sample_rate;
-        duration = 36;//duration = src.length * 16 * symbol_size /7
+        duration = 36;
         number_of_carriers = 16;
-        name = (TextView) findViewById(R.id.username);
-        mail = (TextView) findViewById(R.id.textView);
-        requestNamePermissions();
-        requestWritePermissions();
-        requestRecordPermissions();
+
         ContextWrapper contextWrapper = new ContextWrapper(getApplicationContext());
         File directory = contextWrapper.getDir(filepath, Context.MODE_PRIVATE);
         myInternalFile = new File(directory , filename);
 
-        a = name.getText().toString();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -170,6 +154,7 @@ public class MainActivity extends AppCompatActivity
         check();
     }
 
+    //send and receive button functioning
     public void clicked(View v) {
         if (v.getId() == R.id.send) {
             initTransmit();
@@ -177,6 +162,8 @@ public class MainActivity extends AppCompatActivity
             initReceive();
         }
     }
+
+    //chat storage file check
     public void check(){
         boolean isFilePresent = isFilePresent(this, "storage.json");
         if(!isFilePresent) {
@@ -190,7 +177,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
+    //color for receiving message user
     public String getRandomColor() {
         Random r = new Random();
         StringBuffer sb = new StringBuffer("#");
@@ -200,8 +187,7 @@ public class MainActivity extends AppCompatActivity
         return sb.toString().substring(0, 7);
     }
 
-    //public void test(){System.out.println("Working");}
-    @Override
+    @Override    //transmitter generate button
     public void onClick(View v) {
         if (v.getId() == R.id.generate) {
 
@@ -216,6 +202,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //mic permission
     public void requestRecordPermissions() {
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO);
@@ -246,7 +233,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //username and email extraction permission
     public void requestNamePermissions() {
+        setContentView(R.layout.nav_header_receiver);
+        mail = (TextView) findViewById(R.id.mailid);
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.GET_ACCOUNTS);
 
@@ -287,13 +277,12 @@ public class MainActivity extends AppCompatActivity
         if (!possibleEmails.isEmpty() && possibleEmails.get(0) != null) {
             String email = possibleEmails.get(0);
             String[] parts = email.split("@");
+            System.out.println(email);
             mail.setText(email);
             if (parts.length > 1)
                 name.setText(parts[0]);
         }
     }
-
-
 
     protected void makeRecordRequest() {
         ActivityCompat.requestPermissions(this,
@@ -326,15 +315,12 @@ public class MainActivity extends AppCompatActivity
                         makeWriteRequest();
                     }
                 });
-
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             } else {
                 makeWriteRequest();
             }
         }
-
     }
 
     protected void makeWriteRequest() {
@@ -346,17 +332,13 @@ public class MainActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case REQUEST_WRITE_STORAGE: {
-
                 if (grantResults.length == 0
                         || grantResults[0] !=
                         PackageManager.PERMISSION_GRANTED) {
-
                     Log.i(TAG, "Permission has been denied by user");
-
                 } else {
 
                     Log.i(TAG, "Permission has been granted by user");
-
                 }
                 return;
             }
@@ -415,7 +397,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -436,6 +417,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    //receiving handling
     public void initReceive() {
 
         final Context context = getApplicationContext();
@@ -443,7 +425,6 @@ public class MainActivity extends AppCompatActivity
         int duration = Toast.LENGTH_SHORT;
 
         long free = Runtime.getRuntime().freeMemory();
-
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
@@ -474,17 +455,15 @@ public class MainActivity extends AppCompatActivity
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.receive);
-
-
     }
+
+    //chat display handling
         public void initHistory() {
 
         final Context context = getApplicationContext();
@@ -492,7 +471,6 @@ public class MainActivity extends AppCompatActivity
         int duration = Toast.LENGTH_SHORT;
 
         long free = Runtime.getRuntime().freeMemory();
-
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
@@ -504,7 +482,6 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         toggle.syncState();
-
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -544,6 +521,8 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
+
+    //transmission handling
     public void initTransmit() {
         final Context context = getApplicationContext();
 
@@ -574,7 +553,6 @@ public class MainActivity extends AppCompatActivity
         gen.setOnClickListener(this);
         mEdit = (EditText) findViewById(R.id.transmitString);
 
-
         fab_trans = (FloatingActionButton) findViewById(R.id.fab);
         fab_trans.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -583,7 +561,6 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
 
                 mediaplayer = new MediaPlayer();
-
 
                 String root = Environment.getExternalStorageDirectory().toString();
                 File dir = new File(root, "Soundcom");
@@ -595,8 +572,6 @@ public class MainActivity extends AppCompatActivity
                     mediaplayer.setDataSource(dir + File.separator + "FSK.wav");
                     mediaplayer.prepare();
                     mediaplayer.start();
-                    name = (TextView) findViewById(R.id.name);
-                    a=name.getText().toString();
                     MemberData data = new MemberData(a, getRandomColor());
                     boolean belongsToCurrentUser=true;
                     final Message message = new Message(src, data, belongsToCurrentUser);
@@ -608,10 +583,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
         fab_trans.hide();
-
-
     }
 
+    //text to voice media generation
     public void generate(final Context context) {
         final ProgressDialog mProgressDialog = ProgressDialog.show(this, "Hold Tight", "Generating Modulation Data", true);
 
@@ -625,9 +599,7 @@ public class MainActivity extends AppCompatActivity
                 transmitter.writeAudio();
                 System.out.println("WaveFile Written. Thread waiting");
 
-
                 try {
-
                     // code runs in a thread
                     runOnUiThread(new Runnable() {
                         @Override
@@ -642,7 +614,7 @@ public class MainActivity extends AppCompatActivity
         }.start();
     }
 
-
+    //recording and processing
     public void record(final Context context) {
         final ProgressDialog mProgressDialog = ProgressDialog.show(this, "Hold Tight", "Recovering Signal", true);
         new Thread() {
@@ -704,6 +676,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+ //add message in message list after every receive and transfer
 public void printmessage(final Message message){
     initHistory();
 
@@ -742,19 +715,6 @@ public void printmessage(final Message message){
 }
     public String loadJSONFromAsset() {
         String json = "";
-       /* try {
-            FileInputStream fin = openFileInput("storage.json");
-            int c;
-            while( (c = fin.read()) != -1){
-                json = json + Character.toString((char)c);
-            }
-
-            fin.close();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        */
         try {
             FileInputStream fis = new FileInputStream(myInternalFile);
             DataInputStream in = new DataInputStream(fis);
@@ -771,6 +731,8 @@ public void printmessage(final Message message){
         return json;
     }
 }
+
+//converting message to JSON format for storage
 class JsonUtil {
 
     public static String toJSon(List<Message> messages , int n) {
@@ -780,17 +742,13 @@ class JsonUtil {
             JSONArray Jarray= new JSONArray();
             for(int i=0;i<n;i++) {
                 JSONObject jsonTxt = new JSONObject();
-                jsonTxt.put("text", messages.get(i).getText()); // Set the first name/pair
+                jsonTxt.put("text", messages.get(i).getText());
 
-                JSONObject jsondata = new JSONObject(); // we need another object to store the address
+                JSONObject jsondata = new JSONObject();
                 jsondata.put("name", messages.get(i).getData().getName());
                 jsondata.put("color", messages.get(i).getData().getColor());
 
-                // We add the object to the main object
                 jsonTxt.put("data", jsondata);
-
-                // and finally we add the phone number
-                // In this case we need a json array to hold the java lis
 
                 jsonTxt.put("user", String.valueOf(messages.get(i).isBelongsToCurrentUser()));
                 Jarray.put(jsonTxt);
@@ -808,6 +766,8 @@ class JsonUtil {
 
     }
 }
+
+//received message user handling
 class MemberData {
     private String name;
     private String color;
