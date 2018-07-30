@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity
     }
     protected void makeNameRequest() {
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.GET_ACCOUNTS},
+                new String[]{Manifest.permission.GET_ACCOUNTS,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO},
                 REQUEST_WRITE_STORAGE);
     }
 
