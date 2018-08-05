@@ -36,7 +36,7 @@ public class ImageHandler {
 
 
         } catch (Exception e) {
-            Log.d("RedTooth", e.toString());
+            Log.d("Soundcom", e.toString());
         }
 
 
@@ -49,7 +49,7 @@ public class ImageHandler {
         try {
             baos.close();
         }catch (Exception e){
-            Log.d("RedTooth",e.toString());
+            Log.d("Soundcom",e.toString());
         }
     }
     public int[] getBitsFromBytes (byte[] bytes){

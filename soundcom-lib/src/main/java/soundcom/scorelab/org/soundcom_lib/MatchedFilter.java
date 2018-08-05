@@ -50,11 +50,9 @@ public class MatchedFilter {
 
         this.recovered_signal = new ArrayList<Double>();
 
-
         getSync();
         matchSignal();
         recoverSignal();
-
 
     }
 
@@ -67,8 +65,6 @@ public class MatchedFilter {
         chirp_signal_a = toArray((chirp_signal));
 
         Collections.reverse(chirp_signal);
-
-
     }
 
 
@@ -85,8 +81,6 @@ public class MatchedFilter {
             fft.realForwardFull(signal_fft);
 
             //Working.
-
-
             chirp_fft = new double[modulated.size() * 2];
             System.arraycopy(chirp_signal_a, 0, chirp_fft, 0, chirp_signal_a.length);
 
@@ -103,7 +97,6 @@ public class MatchedFilter {
             }
             fft.realInverseFull(filter_out, true);
             System.out.println("Multiplication and IFFT Complete");
-
 
             filter_out = abs(filter_out);
             System.out.println("Absoloute Value found");
@@ -131,13 +124,9 @@ public class MatchedFilter {
             start_index = maxIndex(filter_out, max) +(int) (symbol_size*sample_rate);
             System.out.println("Offset is: " + (int) (symbol_size*sample_rate));
 
-
-
             for (int n = start_index; n < start_index +1323000; n++) {
                 recovered_signal.add(modulated.get(n));
-
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             recovered_signal.clear();
@@ -155,7 +144,6 @@ public class MatchedFilter {
             }
         }
         return max_;
-
     }
 
     public ArrayList<Double> getRecovered_signal() {
@@ -167,7 +155,6 @@ public class MatchedFilter {
         for (int i = 0; i < in.size(); i++) {
             ret[i] = in.get(i);
         }
-
         return ret;
     }
 
@@ -176,8 +163,6 @@ public class MatchedFilter {
         for (int i = 0; i < in.length; i++) {
             ret.add(in[i]);
         }
-
-
         return ret;
     }
 
@@ -187,7 +172,6 @@ public class MatchedFilter {
             ret[i] = Math.abs(input[i]);
 
         }
-
         return ret;
     }
 
@@ -204,6 +188,4 @@ public class MatchedFilter {
 
         return r;
     }
-
-
 }
