@@ -5,9 +5,9 @@ package soundcom.scorelab.org.soundcom;
  */
 
 public class Message {
-    private String text;
-    private MemberData data;
-    private boolean belongsToCurrentUser;
+    private String text; //message data
+    private MemberData data; //username and user color
+    private boolean belongsToCurrentUser; //check if message is transmitted or received
 
     public Message(String text, MemberData data, boolean belongsToCurrentUser) {
         this.text = text;

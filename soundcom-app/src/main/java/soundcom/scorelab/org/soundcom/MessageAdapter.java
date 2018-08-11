@@ -18,15 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 public class MessageAdapter extends BaseAdapter {
 
-    List<Message> messages = new ArrayList<Message>();
+    List<Message> messages = new ArrayList<Message>(); //messagelist to store messages
     Context context;
 
     public MessageAdapter(Context context) {
         this.context = context;
-    }
+    } //method to display messages
 
-
-    public void add(Message message) {
+    public void add(Message message) { //add message to messages_list
         this.messages.add(message);
         notifyDataSetChanged();
     }
@@ -35,7 +34,6 @@ public class MessageAdapter extends BaseAdapter {
     public int getCount() {
         return messages.size();
     }
-
 
     public List<Message> getmessages() {
         return messages;
@@ -58,13 +56,13 @@ public class MessageAdapter extends BaseAdapter {
         LayoutInflater messageInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         Message message = messages.get(i);
         System.out.println("history changed");
-        if (message.isBelongsToCurrentUser()) {
+        if (message.isBelongsToCurrentUser()) {  //message is transmitted
             convertView = messageInflater.inflate(R.layout.my_message, null);
             holder.messageBody = (TextView) convertView.findViewById(R.id.message_body);
             convertView.setTag(holder);
             holder.messageBody.setText(message.getText());
             System.out.println("message by me");
-        } else {
+        } else {  //message is received
             convertView = messageInflater.inflate(R.layout.their_message, null);
             holder.avatar = (View) convertView.findViewById(R.id.avatar);
             holder.name = (TextView) convertView.findViewById(R.id.name);
