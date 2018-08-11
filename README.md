@@ -18,6 +18,14 @@ To access chat history click on history button in navigation panel.
 
 Video link - https://drive.google.com/file/d/1QSEJx1tP35t-_ZtvqYZ-KsA3ZNMTRbLB/view?usp=sharing
 
+<div >
+<img src="/images/Screenshot_1532763288.png" width=260px align=left>
+<img src="/images/Screenshot_1532763181.png" width=260px align=left>
+<img src="/images/Screenshot_1532763308.png" width=260px >
+<img src="/images/Screenshot_1532763314.png" width=260px align=left style="margin-left:150px;">
+<img src="/images/Screenshot_1532787514.png" width=260px >
+</div>
+
 ## How to Contribute
 Feel free to raise issues. As lot of testing has not been done on it so there are high chances of bugs.
 
