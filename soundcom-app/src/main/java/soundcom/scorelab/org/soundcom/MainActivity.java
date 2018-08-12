@@ -2,6 +2,7 @@
  * Created by user on 29-05-2018.
  */
 package soundcom.scorelab.org.soundcom;
+import android.app.Activity;
 import android.content.ContextWrapper;
 import android.Manifest;
 import android.accounts.Account;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.Test;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -52,6 +54,8 @@ import java.util.Random;
 
 import java.io.File;
 import java.io.FileOutputStream;
+
+import soundcom.scorelab.org.soundcom_lib.Permission;
 import soundcom.scorelab.org.soundcom_lib.Receiver;
 import soundcom.scorelab.org.soundcom_lib.Transmitter;
 
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity
     private static Receiver receiver;
     private static String modulation;
     private static ImageView image;
-    private static String src;
+    private String src;
     private static double duration;
     private static double sample_rate;
     private static double symbol_size;
@@ -85,7 +89,11 @@ public class MainActivity extends AppCompatActivity
     private String filename = "storage.json";               //Chat storage
     private String filepath = "MyFileStorage";              //Path to file
     private File myInternalFile;
+    //private Context context;
+    @Override
+    public void onClick(View v){
 
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -103,16 +111,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        View send = findViewById(R.id.send);
-        send.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                clicked(v);
-            }
-
-        });
-        View receive = findViewById(R.id.receive);
+        View receive = findViewById(R.id.receive);     //receive button on home page
         receive.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -121,7 +121,15 @@ public class MainActivity extends AppCompatActivity
             }
 
         });
+        View send = findViewById(R.id.send);        //send button on home page
+        send.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                clicked(v);
+            }
+
+        });
 
         requestWritePermissions();       //wav file & storage file write permission;
         requestRecordPermissions();      //mic record permission
@@ -153,7 +161,39 @@ public class MainActivity extends AppCompatActivity
 
         check();
     }
+ public void inithome(){  //home page display
+     setContentView(R.layout.home);
+     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+     setSupportActionBar(toolbar);
+     View receive = findViewById(R.id.receive);     //receive button on home page
+     receive.setOnClickListener(new View.OnClickListener() {
 
+         @Override
+         public void onClick(View v) {
+             clicked(v);
+         }
+
+     });
+     View send = findViewById(R.id.send);        //send button on home page
+     send.setOnClickListener(new View.OnClickListener() {
+
+         @Override
+         public void onClick(View v) {
+             clicked(v);
+         }
+
+     });
+     image = new ImageView(this);
+     image.setImageResource(R.drawable.transmit);
+     NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+     navigationView.setNavigationItemSelectedListener(this);
+
+     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+     ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+             this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+     drawer.setDrawerListener(toggle);
+     toggle.syncState();
+ }
     //send and receive button functioning
     public void clicked(View v) {
         if (v.getId() == R.id.send) {
@@ -177,6 +217,8 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+
     //color for receiving message user
     public String getRandomColor() {
         Random r = new Random();
@@ -186,23 +228,25 @@ public class MainActivity extends AppCompatActivity
         }
         return sb.toString().substring(0, 7);
     }
+    //generate button functioning
+    public void clickHelper(Context context,EditText mEdit, View v) {
 
-    @Override    //transmitter generate button
-    public void onClick(View v) {
-        if (v.getId() == R.id.generate) {
-
-            final Context context = getApplicationContext();
-            src = mEdit.getText().toString();
+        src = mEdit.getText().toString();
             while (src.length() != 30) {
                 src += " ";
             }
-            generate(context);
-            fab_trans.show();
+            mEdit.setText(src);
 
-        }
+            System.out.println(context.getClass());
+
+            if(context.getClass()==android.app.Application.class)
+            {generate(context);
+            fab_trans.show();}
+            else
+                return;
     }
 
-    //mic permission
+    //mic permission to record audio
     public void requestRecordPermissions() {
         int permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.RECORD_AUDIO);
@@ -291,7 +335,7 @@ public class MainActivity extends AppCompatActivity
     }
     protected void makeNameRequest() {
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.GET_ACCOUNTS,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.RECORD_AUDIO},
+                new String[]{Manifest.permission.GET_ACCOUNTS,Manifest.permission.RECORD_AUDIO,Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 REQUEST_WRITE_STORAGE);
     }
 
@@ -348,7 +392,7 @@ public class MainActivity extends AppCompatActivity
     private boolean create(Context context, String fileName, String jsonString){
 
         try {
-            FileOutputStream fOut = openFileOutput(fileName,Context.MODE_PRIVATE);
+            FileOutputStream fOut = context.openFileOutput(fileName,Context.MODE_PRIVATE);
             fOut.write(jsonString.getBytes());
             fOut.close();
             return true;
@@ -361,10 +405,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public boolean isFilePresent(Context context, String fileName) {
-        String path = context.getFilesDir().getAbsolutePath() + "/" + fileName;
+        String path = context.getFilesDir().getAbsolutePath();
+        path=path.substring(0,path.length()-5)+"app_MyFileStorage"+"/" + fileName;
         File file = new File(path);
         System.out.println(path);
-        return file.exists();
+        return file.exists()&& !file.isDirectory();
     }
     @Override
     public void onBackPressed() {
@@ -400,7 +445,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        if(id==R.id.homepage){
+            inithome();
+        }
         if (id == R.id.receive) {
             initReceive();
 
@@ -487,29 +534,26 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.history);
         System.out.println("History inited");
-        //check();
             messageAdapter = new MessageAdapter(this);
 
             try {
-            System.out.println(loadJSONFromAsset());
-            JSONObject obj = new JSONObject(loadJSONFromAsset());
+            System.out.println(loadJSONFromAsset(myInternalFile)); //loading messages from json file
+            JSONObject obj = new JSONObject(loadJSONFromAsset(myInternalFile));
             JSONArray messages = obj.getJSONArray("messages");
-            //JSONArray messages = new JSONArray(loadJSONFromAsset());
             for (int i = 0; i < messages.length(); i++) {
                 JSONObject jo_inside = messages.getJSONObject(i);
                 String textvalue = jo_inside.getString("text");
                 JSONObject data = jo_inside.getJSONObject("data");
                 MemberData datavalue = new MemberData(data.getString("name"),data.getString("color"));
                 boolean iscurrentuser = Boolean.valueOf(jo_inside.getString("user"));
-                //Add your values in your `ArrayList` as below:
                 final Message message = new Message(textvalue,datavalue,iscurrentuser);
                 messagesView = (ListView) findViewById(R.id.messages_view);
-                messagesView.setAdapter(messageAdapter);
-                //messages.add(message);
+                messagesView.setAdapter(messageAdapter); //display message list
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        messageAdapter.add(message);
+                        messageAdapter.add(message);            //add message to messages_list
                         messagesView.setSelection(messagesView.getCount() - 1);
                         System.out.println("message added");
                     }
@@ -550,13 +594,21 @@ public class MainActivity extends AppCompatActivity
 
 
         gen = (Button) findViewById(R.id.generate);
-        gen.setOnClickListener(this);
         mEdit = (EditText) findViewById(R.id.transmitString);
+        gen.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                clickHelper(context,mEdit,v);
+            }
+
+        });
+
 
         fab_trans = (FloatingActionButton) findViewById(R.id.fab);
         fab_trans.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {  //playing the wav file
                 Snackbar.make(view, "Transmitting Modulated Waveform", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
@@ -575,7 +627,7 @@ public class MainActivity extends AppCompatActivity
                     MemberData data = new MemberData(a, getRandomColor());
                     boolean belongsToCurrentUser=true;
                     final Message message = new Message(src, data, belongsToCurrentUser);
-                    printmessage(message);
+                    printmessage(message);  //add transmitted message to chat
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -585,7 +637,7 @@ public class MainActivity extends AppCompatActivity
         fab_trans.hide();
     }
 
-    //text to voice media generation
+    //text to voice media generation,creating wav file to be played
     public void generate(final Context context) {
         final ProgressDialog mProgressDialog = ProgressDialog.show(this, "Hold Tight", "Generating Modulation Data", true);
 
@@ -693,27 +745,31 @@ public void printmessage(final Message message){
     int x=messageAdapter.getCount();
     List<Message> messages= messageAdapter.getmessages();
     JsonUtil jsonstring= new JsonUtil();
-    String JSONcontent = jsonstring.toJSon(messages,x);
-    if(isFilePresent(this, "storage.json")) {
-        try {
-            //FileOutputStream fOut = openFileOutput("storage.json",Context.MODE_PRIVATE);
-            FileOutputStream fOut = new FileOutputStream(myInternalFile);
-            fOut.write(JSONcontent.getBytes());
-            fOut.close();
-            System.out.println("Done");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //proceed with storing the first todo  or show ui
-    } else {
-        create(this, "storage.json", "{}");
-        printmessage(message);
-        //show error or try again.
-    }
-
+    String JSONcontent = jsonstring.toJSON(messages,x);
+    Context context=getApplicationContext();
+    write(JSONcontent,message,context,myInternalFile);
 }
-    public String loadJSONFromAsset() {
+    //write messages to file storage.json
+    public void write(String JSONcontent,Message message,Context context,File myInternalFile){
+        if(isFilePresent(context, "storage.json")) {
+            try {
+                FileOutputStream fOut = new FileOutputStream(myInternalFile);
+                fOut.write(JSONcontent.getBytes());
+                fOut.close();
+                System.out.println("Done");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //proceed with storing the first todo  or show ui
+        } else {
+            create(context, "storage.json", "{}");
+            if(context.getClass()==android.app.Application.class)
+            printmessage(message);
+        }
+    }
+    //read messages from file storage.json
+    public String loadJSONFromAsset(File myInternalFile) {
         String json = "";
         try {
             FileInputStream fis = new FileInputStream(myInternalFile);
@@ -733,9 +789,9 @@ public void printmessage(final Message message){
 }
 
 //converting message to JSON format for storage
-class JsonUtil {
+class JsonUtil extends Activity {
 
-    public static String toJSon(List<Message> messages , int n) {
+    public static String toJSON(List<Message> messages , int n) {
         try {
             // Here we convert Java Object to JSON
             JSONObject messageslist= new JSONObject();
