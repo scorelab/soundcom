@@ -1,4 +1,6 @@
 # Soundcom
+[![Gitter](https://badges.gitter.im/scorelab/soundcom.svg)](https://gitter.im/scorelab/soundcom?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 Soundcom is an open source android based app focussing on near field communication through soundwaves.
 
 ## Setup
